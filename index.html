@@ -81,9 +81,18 @@
         .layer-3 { border-left-color: var(--layer3-color); }
         .layer-2 { border-left-color: var(--layer2-color); }
         .layer-1 { border-left-color: var(--layer1-color); }
-        
-        .layer-title { font-weight: bold; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block; font-size: 15px; }
 
+        /* Cabecera interna de cada capa con su respectivo icono */
+        .layer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+        .layer-title { font-weight: bold; text-transform: uppercase; color: var(--accent); font-size: 15px; }
+        .layer-icon { font-size: 20px; opacity: 0.85; }
+        
+        .layer-4 .layer-icon { color: var(--layer4-color); }
+        .layer-3 .layer-icon { color: var(--layer3-color); }
+        .layer-2 .layer-icon { color: var(--layer2-color); }
+        .layer-1 .layer-icon { color: var(--layer1-color); }
+        
+      
         .grid-elements { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
         .element-box { background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-size: 13px; line-height: 1.4; }
         .critical-alert { border: 1px solid var(--layer1-color); animation: pulse 2s infinite; }
@@ -117,13 +126,16 @@
         <button class="nav-btn" onclick="openModal('variables')">Variables</button>
         <button class="nav-btn" onclick="openModal('hardware')">Hardware (Nodos)</button>
         <button class="nav-btn" onclick="openModal('comunicacion')">Comunicación Inalámbrica</button>
-        <button class="nav-btn" onclick="openModal('enrutamiento')">Enrutamiento e Internet</button>
+        <button class="nav-btn" onclick="openModal('enrutamiento')">Enrutamiento</button>
         <button class="nav-btn" onclick="openModal('red')">Red de Sensores</button>
     </nav>
 
     <div class="architecture-container">
         <div class="layer-card layer-4">
+		<div class="layer-header">
             <span class="layer-title">Capa 4: Gestión Central (Aplicación y Despacho)</span>
+			<i class="fa-solid fa-display-linechart layer-icon" title="Consolas de Control e Interfaz Móvil">🖥️</i>
+		</div>
             <div class="grid-elements">
                 <div class="element-box"><strong>App Móvil Vecinal:</strong> Interfaz interactiva para el reporte inmediato de incidentes de los residentes de Teusaquillo.</div>
                 <div class="element-box critical-alert"><strong>Consola CAI Parkway:</strong> Centralización de alarmas críticas y visualización cartográfica vía WebSockets.</div>
@@ -131,7 +143,10 @@
         </div>
 
         <div class="layer-card layer-3">
+		<div class="layer-header">
             <span class="layer-title">Capa 3: Transporte y Enrutamiento Core</span>
+			<i class="fa-solid fa-network-wired layer-icon" title="Infraestructura de Red Inalámbrica y Puertas de Enlace">🌐</i>
+		</div>
             <div class="grid-elements">
                 <div class="element-box"><strong>Gateway LoRaWAN (Concentrador):</strong> Recibe ráfagas por protocolo ALOHA de los nodos y los empaqueta.</div>
                 <div class="element-box"><strong>Backhaul Red Celular (4G/5G):</strong> Canal primario cifrado mediante APN privada hacia el servidor de aplicaciones de la Policía.</div>
@@ -139,7 +154,11 @@
         </div>
 
         <div class="layer-card layer-2">
+		<div class="layer-header">
             <span class="layer-title">Capa 2: Procesamiento Local y Enlace</span>
+		
+			<i class="fa-solid fa-microchip layer-icon" title="Computación Perimetral (Edge Computing)">⚙️</i>
+		</div>
             <div class="grid-elements">
                 <div class="element-box"><strong>Edge Computing (Raspberry Pi 5):</strong> Procesamiento perimetral para analítica básica y filtrado de falsas alarmas antes de la transmisión.</div>
                 <div class="element-box"><strong>Protocolo de Acceso LoRa MAC:</strong> Optimización de ciclos de trabajo de radiofrecuencia (Duty Cycle) para evitar colisiones.</div>
@@ -147,7 +166,10 @@
         </div>
 
         <div class="layer-card layer-1">
+		<div class="layer-header">
             <span class="layer-title">Capa 1: Captura Física (Nodos y Sensores)</span>
+			<i class="fa-solid fa-rss layer-icon" title="Sensores de Campo y Dispositivos de Hardware">📡</i>
+		</div>
             <div class="grid-elements">
                 <div class="element-box"><strong>Nodos Perimetrales (STM32WLE5):</strong> Sensores magnéticos instalados en accesos clave del vecindario.</div>
                 <div class="element-box critical-alert"><strong>Botones de Pánico en Postes:</strong> Dispositivos industriales cableados a interrupción directa de hardware para transmisión prioritaria.</div>
