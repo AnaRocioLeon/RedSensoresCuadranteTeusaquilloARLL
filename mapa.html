@@ -14,6 +14,17 @@
         .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 2px solid #fff; }
         
+        /* Estilo para las etiquetas de texto integradas en el mapa que sí respetan el zoom */
+        .antenna-label {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 3px #38bdf8;
+            text-align: center;
+        }
+
         /* Estilo para la etiqueta personalizada del CAI Parkway */
         .cai-label {
             background: #1e293b;
@@ -33,7 +44,7 @@
 </head>
 <body>
     <div class="map-container">
-        <h1>📍 Despliegue Cartográfico de Nodos Tecnológicos</h1>
+        <h1>📍 Despliegue Cartográfico de Nodos e Infraestructura de Antenas</h1>
         <p style="text-align: center; font-size: 13px; color: #94a3b8; margin: 0 0 20px 0;">Distribución geoespacial sobre el Cuadrante E13C05020 de la Policía Metropolitana de Bogotá.</p>
         
         <div id="map"></div>
@@ -45,84 +56,89 @@
             <div class="legend-item"><span class="dot" style="background:#d97706"></span> <span><strong>🟠 Subestación Edge</strong></span></div>
             <div class="legend-item"><span class="dot" style="background:#a855f7"></span> <span><strong>🟣 Cámaras (8)</strong></span></div>
             <div class="legend-item"><span class="dot" style="background:#eab308"></span> <span><strong>🟡 Alarmas Acústicas (5)</strong></span></div>
+            <div class="legend-item" style="grid-column: 1 / -1; justify-content: center; border-top: 1px dashed #334155; padding-top: 8px; margin-top: 5px;">
+                <span style="font-size: 16px; margin-right: 5px;">🗼 / 📡</span> <span><strong>Símbolos sobre los nodos:</strong> Antenas RF de Alta Ganancia (915 MHz) fijas con el zoom</span>
+            </div>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Configurar un sistema de coordenadas plano basado en los píxeles de la imagen original
-        const map = L.map('map', { crs: L.CRS.Simple, minZoom: -1 });
-
-        // Dimensiones de la imagen para el encuadre matemático
-        const bounds = [[0, 0], [750, 1000]]; 
+        // Inicializar mapa en un CRS Simple (Sistema plano de píxeles basado en la imagen)
+        const map = L.map('map', { 
+            crs: L.CRS.Simple, 
+            minZoom: -1,
+            maxZoom: 2
+        });
         
-        // Carga la imagen del plano
+        const bounds = [[0, 0], [750, 1000]]; 
         const image = L.imageOverlay('mapacuadrante.png', bounds).addTo(map);
         map.fitBounds(bounds);
 
         // ==========================================
-        // 1. GATEWAY PRINCIPAL (VERDE)
+        // INFRAESTRUCTURA CORE Y ANTENAS (CORREGIDAS CON BINDTOOLTIP FIJO)
         // ==========================================
-        L.circleMarker([350, 500], { color: '#ffffff', fillColor: '#10b981', fillOpacity: 0.9, radius: 10 })
-            .addTo(map).bindPopup("<b>🟢 GATEWAY CENTRAL LORAWAN</b><br>Ubicación: Centro del Cuadrante (Agregador Core).");
+        
+        // 1. Gateway Central (Punto Verde) + Antena Síncrona 📡
+        L.circleMarker([350, 500], { color: '#ffffff', fillColor: '#10b981', fillOpacity: 0.9, radius: 12 })
+            .addTo(map)
+            .bindPopup("<b>📡 ANTENA CORE - ESTACIÓN BASE</b><br>Tipo: Colineal multipunto de alta ganancia.<br>Ubicación: Gateway Central.")
+            .bindTooltip("📡", { permanent: true, direction: 'center', className: 'antenna-label' });
+
+        // 2. Subestación Edge (Punto Naranja) + Antena Torre 🗼
+        L.circleMarker([380, 420], { color: '#ffffff', fillColor: '#d97706', fillOpacity: 0.9, radius: 12 })
+            .addTo(map)
+            .bindPopup("<b>🗼 ANTENA DE SUBESTACIÓN EDGE</b><br>Tipo: Omnidireccional de fibra de vidrio (8 dBi).<br>Ubicación física sobre el nodo Edge Computing.")
+            .bindTooltip("🗼", { permanent: true, direction: 'center', className: 'antenna-label' });
+
+        // 3. Antena Sectorial de Refuerzo sobre Nodo Perimetral D (Azul)
+        L.circleMarker([650, 780], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 12 })
+            .addTo(map)
+            .bindPopup("<b>📡 ANTENA SECTORIAL DIRECCIONAL</b><br>Arreglo de panel acoplado al Nodo Perimetral D para romper atenuaciones estructurales.")
+            .bindTooltip("📡", { permanent: true, direction: 'center', className: 'antenna-label' });
+
 
         // ==========================================
-        // 2. BOTONES DE PÁNICO (ROJOS) - TOTAL: 4
+        // CAPA DE NODOS ESTÁNDAR
         // ==========================================
+        
+        // Botones de pánico (Rojos)
         L.circleMarker([450, 680], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 }).addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO #1</b>");
         L.circleMarker([220, 310], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 }).addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO #2</b>");
         L.circleMarker([620, 520], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 }).addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO #3</b>");
         L.circleMarker([120, 480], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 }).addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO #4</b>");
 
-        // ==========================================
-        // 3. NODOS PERIMETRALES (AZULES) - TOTAL: 5
-        // ==========================================
+        // Nodos perimetrales restantes (Azules)
         L.circleMarker([550, 380], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL A</b>");
         L.circleMarker([180, 750], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL B</b>");
         L.circleMarker([420, 220], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL C</b>");
-        L.circleMarker([650, 780], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL D</b>");
         L.circleMarker([310, 880], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL E</b>");
 
-        // ==========================================
-        // 4. SUBESTACIÓN EDGE (NARANJA)
-        // ==========================================
-        L.circleMarker([380, 420], { color: '#ffffff', fillColor: '#d97706', fillOpacity: 0.9, radius: 8 })
-            .addTo(map).bindPopup("<b>🟠 PROCESAMIENTO PERIMETRAL EDGE</b><br>Hardware: Raspberry Pi 5 Core.");
+        // Cámaras (Púrpuras)
+        L.circleMarker([700, 150], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #1</b>");
+        L.circleMarker([580, 280], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #2</b>");
+        L.circleMarker([490, 480], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #3</b>");
+        L.circleMarker([320, 600], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #4</b>");
+        L.circleMarker([250, 180], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #5</b>");
+        L.circleMarker([150, 390], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #6</b>");
+        L.circleMarker([400, 820], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #7</b>");
+        L.circleMarker([580, 900], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA CCTV #8</b>");
 
-        // ==========================================
-        // 5. CÁMARAS DE SEGURIDAD (PÚRPURAS) - TOTAL: 8
-        // ==========================================
-        L.circleMarker([700, 150], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #1</b><br>Monitoreo perimetral noroeste.");
-        L.circleMarker([580, 280], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #2</b>");
-        L.circleMarker([490, 480], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #3</b>");
-        L.circleMarker([320, 600], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #4</b>");
-        L.circleMarker([250, 180], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #5</b>");
-        L.circleMarker([150, 390], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #6</b>");
-        L.circleMarker([400, 820], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #7</b>");
-        L.circleMarker([580, 900], { color: '#ffffff', fillColor: '#a855f7', fillOpacity: 0.9, radius: 6 }).addTo(map).bindPopup("<b>🟣 CÁMARA DE SEGURIDAD CCTV #8</b>");
-
-        // ==========================================
-        // 6. ALARMAS COMUNITARIAS / ACÚSTICAS (AMARILLAS) - TOTAL: 5
-        // ==========================================
-        L.circleMarker([660, 360], { color: '#ffffff', fillColor: '#eab308', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🟡 ALARMA ACÚSTICA #1</b><br>Sirena de disuasión rápida.");
+        // Alarmas (Amarillas)
+        L.circleMarker([660, 360], { color: '#ffffff', fillColor: '#eab308', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🟡 ALARMA ACÚSTICA #1</b>");
         L.circleMarker([520, 580], { color: '#ffffff', fillColor: '#eab308', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🟡 ALARMA ACÚSTICA #2</b>");
         L.circleMarker([300, 250], { color: '#ffffff', fillColor: '#eab308', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🟡 ALARMA ACÚSTICA #3</b>");
         L.circleMarker([190, 550], { color: '#ffffff', fillColor: '#eab308', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🟡 ALARMA ACÚSTICA #4</b>");
         L.circleMarker([460, 890], { color: '#ffffff', fillColor: '#eab308', fillOpacity: 0.9, radius: 7 }).addTo(map).bindPopup("<b>🟡 ALARMA ACÚSTICA #5</b>");
 
-        // ==========================================
-        // 7. INDICADOR CAI PARKWAY
-        // ==========================================
+        // Indicador CAI Parkway (Anclado al borde del sistema de coordenadas del mapa)
         const caiIcon = L.divIcon({
             className: 'custom-div-icon',
             html: "<div class='cai-label'>CAI Parkway ➡️</div>",
             iconSize: [120, 30],
             iconAnchor: [0, 15]
         });
-        
-        L.marker([380, 960], { icon: caiIcon }).addTo(map)
-            .bindPopup("<b>🖥️ Destino del Flujo de Datos</b><br>Dirección del CAI Parkway hacia donde se despachan las interrupciones críticas.");
-            
+        L.marker([380, 840], { icon: caiIcon }).addTo(map);
     </script>
 </body>
 </html>
