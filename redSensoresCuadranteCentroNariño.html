@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador Gráfico: Red de Sensores - Cuadrante E13C05020</title>
+    <style>
+        :root {
+            --primary-color: #1e293b;
+            --layer4-color: #0284c7;
+            --layer3-color: #0d9488;
+            --layer2-color: #d97706;
+            --layer1-color: #dc2626;
+            --text-light: #f8fafc;
+            --bg-main: #0f172a;
+            --accent: #38bdf8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            max-width: 900px;
+        }
+
+        h1 {
+            color: var(--accent);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            margin-top: 0;
+            font-size: 14px;
+        }
+
+        /* MENÚS DE BOTONES */
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 950px;
+        }
+
+        .nav-btn {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 6px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-main);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .nav-menu.bottom {
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .nav-btn.secondary {
+            border-color: #475569;
+            background-color: #0f172a;
+        }
+        .nav-btn.secondary:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            border-color: #e2e8f0;
+        }
+
+        /* ARQUITECTURA CONTENEDOR */
+        .architecture-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 950px;
+        }
+
+        .layer-card {
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border-left: 8px solid;
+            background-color: #1e293b;
+        }
+
+        .layer-4 { border-left-color: var(--layer4-color); }
+        .layer-3 { border-left-color: var(--layer3-color); }
+        .layer-2 { border-left-color: var(--layer2-color); }
+        .layer-1 { border-left-color: var(--layer1-color); }
+
+        .layer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .layer-title {
+            font-size: 17px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .layer-4 .layer-title { color: #38bdf8; }
+        .layer-3 .layer-title { color: #2dd4bf; }
+        .layer-2 .layer-title { color: #fbbf24; }
+        .layer-1 .layer-title { color: #f87171; }
+
+        .layer-tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: #334155;
+            font-weight: bold;
+        }
+
+        .grid-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .element-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .element-box strong {
+            display: block;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+            border-bottom: 1px dashed #334155;
+            padding-bottom: 2px;
+        }
+
+        .critical-alert {
+            border: 1px solid var(--layer1-color);
+            background-color: rgba(220, 38, 38, 0.1);
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        .flow-indicator {
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: bold;
+            margin: -5px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flow-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #334155, transparent);
+            flex-grow: 1;
+        }
+
+        .critical-text { color: #ef4444; }
+
+        /* VENTANAS MODALES ANIMADAS */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: #1e293b;
+            border: 1px solid #475569;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover { color: #f8fafc; }
+
+        .modal-title {
+            color: var(--accent);
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        .modal-body ul, .modal-body ol {
+            padding-left: 20px;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            max-width: 900px;
+            border-top: 1px solid #1e293b;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RED DE SENSORES DE SEGURIDAD URBANA</h1>
+        <p class="subtitle">Modelo de Monitoreo e Interrupción por Capas • Cuadrante E13C05020 (Teusaquillo, Bogotá)</p>
+    </header>
+
+    <nav class="nav-menu">
+        <button class="nav-btn" onclick="openModal('problema')">Definición del Problema</button>
+        <button class="nav-btn" onclick="openModal('justificacion')">Justificación Técnica</button>
+        <button class="nav-btn" onclick="openModal('hardware')">Hardware</button>
+        <button class="nav-btn" onclick="openModal('comunicacion')">Comunicación y Enrutamiento</button>
+        <button class="nav-btn" onclick="openModal('bibliografia')">Bibliografía</button>
+    </nav>
+
+    <div class="architecture-container">
+
+        <div class="layer-card layer-4">
+            <div class="layer-header">
+                <span class="layer-title">Capa 4: Gestión Central</span>
+                <span class="layer-tag">Visualización e Interfaz</span>
+            </div>
+            <div class="grid-elements">
+                <div class="element-box">
+                    <strong>Aplicación Web & Servidor</strong>
+                    Dashboard interactivo montado en la nube. Recibe y grafica el estado de las variables operacionales del cuadrante con actualización automatizada.
+                </div>
+                <div class="element-box">
+                    <strong>Visualización de Datos</strong>
+                    Representación cartográfica del cuadrante. Monitoreo del estado de baterías de los nodos y niveles de señal de radiofrecuencia (RSSI).
+                </div>
+                <div class="element-box critical-alert">
+                    <strong class="critical-text">Consola de Despacho (CAI)</strong>
+                    Canal asíncrono vía WebSockets. Ante un pulso del botón de pánico, genera una alerta sonora y visual inmediata para la patrulla de Policía del cuadrante.
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-indicator">
+            <div class="flow-line"></div>
+            <span>▲ Subida: Protocolo MQTT sobre TCP/IP (Ligero y Seguro) ▲</span>
+            <div class="flow-line"></div>
+        </div>
+
+        <div class="layer-card layer-3">
+            <div class="layer-header">
+                <span class="layer-title">Capa 3: Transmisión (Backhaul)</span>
+                <span class="layer-tag">Enlace y Red Core</span>
+            </div>
+            <div class="grid-elements">
+                <div class="element-box">
+                    <strong>Gateway Concentrador</strong>
+                    Equipo industrial multicanal instalado en punto elevado. Concentra el tráfico de radiofrecuencia local y lo encapsula en tramas IP.
+                </div>
+                <div class="element-box">
+                    <strong>Red Móvil Celular</strong>
+                    Módem de comunicación inalámbrica de largo alcance vía enlaces celulares 4G LTE / 5G para salida directa a la nube.
+                </div>
+                <div class="element-box">
+                    <strong>Seguridad perimetral</strong>
+                    Uso de un APN Privado Corporativo provisto por el operador, actuando como Firewall celular según los criterios del documento base.
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-indicator">
+            <div class="flow-line"></div>
+            <span class="critical-text">▲ RF: Modulación LoRa CSS (915 MHz) | Topología Estrella de Estrellas ▲</span>
+            <div class="flow-line"></div>
+        </div>
+
+        <div class="layer-card layer-2">
+            <div class="layer-header">
+                <span class="layer-title">Capa 2: Procesamiento Local</span>
+                <span class="layer-tag">Edge Computing & Control</span>
+            </div>
+            <div class="grid-elements">
+                <div class="element-box">
+                    <strong>Nodos de Bajo Consumo</strong>
+                    Microcontroladores integrados (STM32WLE5 / ESP32). Procesan variables analógicas y manejan ciclos de reposo profundo (Sleep Mode).
+                </div>
+                <div class="element-box">
+                    <strong>Nodos de Video Analítico</strong>
+                    Hardware de alto rendimiento (Raspberry Pi 5 / Jetson Nano) en cámaras fijas. Ejecución local del algoritmo de lectura de placas (LPR).
+                </div>
+                <div class="element-box critical-alert">
+                    <strong class="critical-text">Controlador de Interrupciones</strong>
+                    Rutinas de Servicio de Interrupción (ISR) por hardware que despiertan el nodo de forma instantánea al presionarse el botón físico de emergencia.
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-indicator">
+            <div class="flow-line"></div>
+            <span>▲ Interfaces de Datos / Señales Eléctricas y GPIO ▲</span>
+            <div class="flow-line"></div>
+        </div>
+
+        <div class="layer-card layer-1">
+            <div class="layer-header">
+                <span class="layer-title">Capa 1: Captura</span>
+                <span class="layer-tag">Sensores e Infraestructura</span>
+            </div>
+            <div class="grid-elements">
+                <div class="element-box">
+                    <strong>Seguridad Residencial</strong>
+                    Barreras fotoeléctricas perimetrales en fachadas de viviendas y sensores de ruptura de cristales (Variables binarias de estado).
+                </div>
+                <div class="element-box">
+                    <strong>Vigilancia Vehicular</strong>
+                    Cámaras analíticas CCTV (LPR) ubicadas estratégicamente en las esquinas de ingreso y salida del perímetro vial del cuadrante.
+                </div>
+                <div class="element-box critical-alert">
+                    <strong class="critical-text">Botones de Pánico</strong>
+                    Pulsadores mecánicos tipo hongo industriales (Antivandálicos IK10 / IP66) instalados en postes de iluminación pública a 4.5 metros de altura.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <nav class="nav-menu bottom">
+        <button class="nav-btn secondary" onclick="openModal('mapa')">📍 Mapa de la Red</button>
+        <button class="nav-btn secondary" onclick="openModal('wireframe')">🖼️ Wireframe (Interfaz Web)</button>
+    </nav>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 class="modal-title" id="modalTitle">Título de la sección</h3>
+            <div class="modal-body" id="modalBody">
+                Contenido dinámico...
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <strong>Nota de Ingeniería:</strong> Las variables de monitoreo ordinario se transmiten cada 30 minutos utilizando la ventaja económica y de bajo consumo de la topología estrella de LoRaWAN, minimizando los costos de desarrollo de software indicados por Sánchez (2026). Las alertas de emergencia interrumpen inmediatamente este temporizador para envíos en tiempo real.
+    </footer>
+
+    <script>
+        const modalData = {
+            problema: {
+                title: "Identificación del Problema",
+                body: `<p><strong>Contexto Urbano:</strong> Inseguridad recurrente en el cuadrante E13C05020 (Localidad de Teusaquillo, Bogotá). Es una zona mixta (residencial, comercial y universitaria) propensa al hurto a personas, vehículos y residencias.</p>
+                       <p><strong>Problema Técnico:</strong> Sistemas de seguridad comunitarios y privados fragmentados. Existe una total desarticulación tecnológica entre las barreras fotoeléctricas de las viviendas, los sistemas de cámaras independientes y el CAI de la Policía, provocando tiempos de respuesta lentos.</p>
+                       <p><strong>Desafío Base:</strong> Basados en el documento de la USTA, se requiere integrar una red de sensores robusta que no sature el espectro, tenga bajo costo de desarrollo de controladores y unifique la centralización de datos cada 30 minutos, con excepción prioritaria para alertas ciudadanas.</p>`
+            },
+            justificacion: {
+                title: "Justificación Técnica (Documento USTA)",
+                body: `<p>Siguiendo las directrices del documento base desarrollado por la Universidad Santo Tomás, la integración de redes de sensores industriales debe sopesar minuciosamente los <strong>costos de desarrollo de software de aplicación, cableado y controladores</strong>.</p>
+                       <ul>
+                           <li><strong>Mitigación de Redes en Malla:</strong> Una topología tradicional en malla (ej. Zigbee) demandaría que la red recalcule rutas constantemente debido a las interferencias dinámicas de Bogotá (buses, árboles, nuevos edificios), disparando los costos de software y destruyendo las baterías residenciales.</li>
+                           <li><strong>Ventaja del Enfoque Propuesto:</strong> La arquitectura de 4 capas propuesta optimiza el uso de controladores locales, aislando el tráfico pesado y permitiendo que la subred local sea económica, eficiente y de alta penetración estructural.</li>
+                       </ul>`
+            },
+            hardware: {
+                title: "Selección de Hardware (Nodos)",
+                body: `<p>Para cumplir con los objetivos técnicos, el hardware de la red se segmenta según sus capacidades de procesamiento:</p>
+                       <ol>
+                           <li><strong>Nodos Sensores y Botones (Bajo Consumo):</strong> Microcontroladores <strong>STM32WLE5</strong> o ESP32-H2. Integran el transceptor de radio en el silicio, operan con baterías de larga duración y permanecen en reposo profundo (<em>Sleep mode</em>) despertando cada 30 minutos o por interrupción del botón de pánico.</li>
+                           <li><strong>Nodos de Video Analítico (Alto Rendimiento):</strong> Microcomputadores <strong>Raspberry Pi 5 o NVIDIA Jetson Nano</strong> acoplados a las cámaras de CCTV. Procesan el video pesado <em>in-situ</em> para realizar la analítica de placas (LPR) y solo transmiten texto ligero (la placa) para no saturar el canal de comunicación inalámbrico.</li>
+                       </ol>`
+            },
+            comunicacion: {
+                title: "Características de Comunicación y Enrutamiento",
+                body: `<p><strong>Elementos de Comunicación Inalámbrica:</strong></p>
+                       <ul>
+                           <li><strong>Antena:</strong> Omnidireccional de Fibra de Vidrio (3 a 5 dBi) instalada en postes a una altura mínima de 4.5 metros para superar la atenuación humana y el tráfico pesado.</li>
+                           <li><strong>Modulación:</strong> LoRa CSS (Chirp Spread Spectrum) a 915 MHz (Banda libre autorizada por la ANE). Altamente inmune al ruido Wi-Fi industrial de Teusaquillo.</li>
+                           <li><strong>Potencia:</strong> Dinámica regulada vía ADR desde +7 dBm hasta +20 dBm (100mW máximo).</li>
+                       </ul>
+                       <p><strong>Protocolo de Enrutamiento:</strong></p>
+                       <ul>
+                           <li><strong>Topología:</strong> Estrella de Estrellas (Estándar LoRaWAN). Los nodos transmiten directo al Gateway en un solo salto sin retransmitirse entre sí, disminuyendo drásticamente la complejidad del software.</li>
+                       </ul>`
+            },
+            bibliografia: {
+                title: "Bibliografía Oficial (APA 7.0)",
+                body: `<p>Sustento documental del proyecto basado en la literatura sugerida:</p>
+                       <ul style="font-size:12px; list-style-type: square;">
+                           <li>Abbas, Z., & Yoon, W. (2015). A survey on energy conserving mechanisms for the internet of things: Wireless networking aspects. <em>Sensors</em>, 15(10), 24818-24847.</li>
+                           <li>Chandra, A., et al. (2007). <em>Wireless sensor networks for industrial applications</em>. Citado en Sánchez, J. F. (Ed.), <em>Comunicaciones Inalámbricas y Móvil</em> (pp. 67-73). Universidad Santo Tomás Seccional Tunja.</li>
+                           <li>Sánchez, J. F. (2026). <em>Comunicaciones Inalámbricas y Móvil: Caso de estudio: redes de sensores</em> (pp. 67-73). Especialización en Gestión de Nuevas Tecnologías de Telecomunicaciones. Universidad Santo Tomás Seccional Tunja.</li>
+                           <li>Kulatunga, C., et al. (2017). Opportunistic wireless networking for smart dairy farming. <em>IT Professional</em>, 19(2), 16-23.</li>
+                       </ul>`
+            },
+            mapa: {
+                title: "📍 Despliegue Cartográfico de la Red (Cuadrante E13C05020)",
+                body: `<p>Estrategia de distribución espacial para mapear sobre las coordenadas del cuadrante en Teusaquillo:</p>
+                       <ul>
+                           <li><strong>Nodos Perimetrales LPR (Rojo):</strong> Ubicados en los 2 cruces semafóricos principales de acceso vehicular del cuadrante para "cerrar" el perímetro mediante lectura de placas.</li>
+                           <li><strong>Nodos de Afluencia Peatonal (Azul):</strong> Postes con cámaras PTZ de 360° y botones de pánico tipo hongo ubicados en el parque central del sector y la zona universitaria/comercial.</li>
+                           <li><strong>Nodos Residenciales (Amarillo):</strong> Concentradores locales en fachadas estratégicas donde se interconectan físicamente las barreras fotoeléctricas de las viviendas de la cuadra.</li>
+                           <li><strong>Gateway Central:</strong> Instalado en la terraza más alta de la zona para garantizar línea de vista directa (LoS) con el 100% de los nodos del cuadrante.</li>
+                       </ul>`
+            },
+            wireframe: {
+                title: "🖼️ Wireframe y Estructura de la Aplicación Web",
+                body: `<p>Diseño de la interfaz para la visualización de variables con actualización cíclica de 30 minutos:</p>
+                       <ul>
+                           <li><strong>Panel Superior (Header):</strong> Estado de conexión de la red de comunicación (Backhaul Celular 4G/5G), hora de última sincronización general e indicador de Firewall (APN Privado).</li>
+                           <li><strong>Sección Central (Dashboard):</strong> Mapa embebido del cuadrante en tiempo real con marcadores interactivos (Verde: Nodo OK, Amarillo: Batería Baja, Gris: Nodo desconectado). Cuadrículas de datos con logs de placas vehiculares detectadas.</li>
+                           <li><strong>Módulo de Alerta Crítica (Pop-up Rojo):</strong> Ocupa toda la pantalla con parpadeo visual y señal auditiva cuando la Capa 2 reporta una interrupción (ISR) por la pulsación de un botón de pánico en la calle, bloqueando los datos ordinarios de 30 minutos para priorizar la emergencia de la Policía.</li>
+                       </ul>`
+            }
+        };
+
+        function openModal(key) {
+            const data = modalData[key];
+            if (data) {
+                document.getElementById('modalTitle').innerHTML = data.title;
+                document.getElementById('modalBody').innerHTML = data.body;
+                document.getElementById('modalOverlay').classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
