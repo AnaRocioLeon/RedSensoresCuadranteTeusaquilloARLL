@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframes: App Móvil y Consola CAI Parkway</title>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --card-bg: #1e293b;
+            --inner-bg: #0f172a;
+            --accent-cian: #38bdf8;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --alert-red: #dc2626;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+        }
+
+        h2 {
+            color: var(--accent-cian);
+            text-transform: uppercase;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px dashed #334155;
+            padding-bottom: 10px;
+        }
+
+        /* -----------------------------------------------------
+           IMAGE 1: WIREFRAME APP MÓVIL (VISTA RESIDENTE)
+        ----------------------------------------------------- */
+        .phone-container {
+            width: 360px;
+            height: 640px;
+            background-color: var(--inner-bg);
+            border: 12px solid #334155;
+            border-radius: 36px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .phone-header {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phone-header .title-block {
+            text-align: left;
+        }
+
+        .phone-header h3 {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .phone-header span {
+            font-size: 11px;
+            color: var(--emerald);
+            font-weight: bold;
+        }
+
+        .phone-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px 20px;
+        }
+
+        .panic-btn-outer {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #f87171 0%, var(--alert-red) 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+            cursor: pointer;
+            animation: pulse-glow 2s infinite;
+            margin-top: 30px;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        .panic-btn-inner {
+            text-align: center;
+            color: var(--text-light);
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .panic-instruction {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: -10px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .status-card {
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .status-card strong {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .status-card p {
+            margin: 0;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .phone-footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid #334155;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .nav-item {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent-cian);
+        }
+
+        /* -----------------------------------------------------
+           IMAGE 2: WIREFRAME CONSOLA WEB (VISTA POLICÍA)
+        ----------------------------------------------------- */
+        .console-container {
+            width: 950px;
+            background-color: var(--card-bg);
+            border: 2px solid #334155;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .console-header {
+            background-color: #1e293b;
+            padding: 15px 20px;
+            border-bottom: 2px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .console-header h3 {
+            margin: 0;
+            font-size: 16px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .console-metrics {
+            display: flex;
+            gap: 15px;
+        }
+
+        .metric-tag {
+            background-color: var(--inner-bg);
+            border: 1px solid #475569;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .console-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            height: 500px;
+        }
+
+        .console-left-panel {
+            border-right: 2px solid #334155;
+            background-color: #111827;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .panel-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: bold;
+            border-bottom: 1px dashed #334155;
+            padding-bottom: 4px;
+            margin: 0;
+        }
+
+        .live-alert-card {
+            background-color: rgba(220, 38, 38, 0.1);
+            border: 1px solid var(--alert-red);
+            border-radius: 6px;
+            padding: 12px;
+            animation: alert-flash 1.5s infinite;
+        }
+
+        @keyframes alert-flash {
+            0% { background-color: rgba(220, 38, 38, 0.1); }
+            50% { background-color: rgba(220, 38, 38, 0.25); }
+            100% { background-color: rgba(220, 38, 38, 0.1); }
+        }
+
+        .live-alert-card h4 {
+            margin: 0 0 5px 0;
+            color: #f87171;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .live-alert-card p {
+            margin: 3px 0;
+            font-size: 12px;
+        }
+
+        .lpr-feed-box {
+            background-color: var(--inner-bg);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 11.5px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .lpr-line {
+            border-bottom: 1px dashed #1e293b;
+            padding-bottom: 4px;
+        }
+        .lpr-line.danger { color: #f87171; font-weight: bold; }
+
+        .console-right-panel {
+            display: grid;
+            grid-template-rows: 1fr 160px;
+        }
+
+        .map-mock-bg {
+            background-color: #0b0f19;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-street-1 { position: absolute; width: 100%; height: 2px; background-color: #1e293b; top: 30%; }
+        .map-street-2 { position: absolute; width: 100%; height: 2px; background-color: #1e293b; top: 70%; }
+        .map-street-3 { position: absolute; width: 2px; height: 100%; background-color: #1e293b; left: 40%; }
+
+        .map-marker {
+            position: absolute;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+        .marker-cai { background-color: var(--accent-cian); left: 10%; top: 45%; }
+        .marker-cam { background-color: var(--amber); right: 20%; top: 15%; }
+        
+        .marker-alert { 
+            background-color: var(--alert-red); 
+            left: 35%; 
+            top: 24%; 
+            animation: pulse-glow 1.5s infinite;
+            font-size: 11px;
+            z-index: 10;
+        }
+
+        .patrol-route-line {
+            position: absolute;
+            width: 25%;
+            height: 2px;
+            background-color: #f87171;
+            border-top: 2px dashed #ef4444;
+            left: 14%;
+            top: 29%;
+            transform: rotate(-10deg);
+        }
+
+        .telemetry-panel {
+            background-color: #0f172a;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .telemetry-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+
+        .telemetry-table td {
+            padding: 4px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        /* -----------------------------------------------------
+           ESTILOS PARA EL PIE DE PÁGINA (FOOTER)
+        ----------------------------------------------------- */
+        .custom-footer {
+            margin-top: 15px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.4;
+            max-width: 100%;
+            border-top: 1px solid #1e293b;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Diseño de la interfaz móvil destinada a los residentes y la central de la Policía Metropolitana del sector (CAI Parkway):</h2>
+				       
+                       <ul>
+                           <li><strong>Interfaz del Ciudadano (App Móvil):</strong> Botón virtual de pánico de pantalla completa (con confirmación háptica), visor de alertas del vecindario y estado de activación de las barreras fotoeléctricas del hogar.</li>
+                           <li><strong>Panel de la Policía (Consola de Gestión):</strong> Mapa en tiempo real con la ubicación exacta del sensor o botón de pánico activado, activando una notificación push prioritaria por WebSockets que rompe el ciclo ordinario de datos de 30 minutos para despachar de inmediato la patrulla del CAI Parkway.</li>
+                       </ul>`
+    <!-- PANTALLAZO 1: APP MÓVIL RESIDENCIAL -->
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <h2>Imagen 1: Pantallazo Interfaz Aplicación Móvil (Residente)</h2>
+        <div class="phone-container">
+            <div class="phone-header">
+                <div class="title-block">
+                    <h3>Vecinos Seguros</h3>
+                    <span>🟢 Red Operativa - LoRa Activo</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); text-align: right;">
+                    Calle 45 # 16-20<br>Cuadrante E13C05020
+                </div>
+            </div>
+            
+            <div class="phone-body">
+                <div style="text-align: center; font-size: 13px; color: var(--text-muted);">
+                    SISTEMA DE INTERRUPCIÓN DE EMERGENCIA
+                </div>
+
+                <div class="panic-btn-outer">
+                    <div class="panic-btn-inner">
+                        🚨<br><br>PÁNICO<br>VIRTUAL
+                    </div>
+                </div>
+
+                <div class="panic-instruction">
+                    Mantener presionado por 2 segundos para enviar alerta inmediata al CAI Parkway
+                </div>
+
+                <div class="status-grid">
+                    <div class="status-card">
+                        <strong>Barreras Hogar</strong>
+                        <p style="color: var(--emerald);">🔒 ACTIVAS / OK</p>
+                    </div>
+                    <div class="status-card">
+                        <strong>Estado Sector</strong>
+                        <p style="color: var(--accent-cian);">🕊️ EN CALMA</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone-footer">
+                <div class="nav-item active">🏠 Inicio</div>
+                <div class="nav-item">📝 Reportar</div>
+                <div class="nav-item">📞 Contacto</div>
+            </div>
+        </div>
+        <div class="custom-footer" style="width: 360px;">
+            Wireframe de la aplicación móvil y de la consola de monitoreo para el CAI de Parkway propuesta. Diseño propio generado por la aplicación Gemini IA (2026).
+        </div>
+    </div>
+
+
+    <!-- PANTALLAZO 2: CONSOLA DE GESTIÓN POLICIAL -->
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <h2>Imagen 2: Pantallazo Consola de Monitoreo e Interrupción (CAI Parkway)</h2>
+        <div class="console-container">
+            <div class="console-header">
+                <h3>🖥️ Consola de Control Perimetral — Cuadrante E13C05020</h3>
+                <div class="console-metrics">
+                    <div class="metric-tag" style="color: var(--emerald);">Nodos Sensores: 42/42 OK</div>
+                    <div class="metric-tag" style="color: var(--accent-cian);">Cámaras LPR: 8/8 OK</div>
+                    <div class="metric-tag" style="color: var(--amber);">Alertas Batería: 0</div>
+                </div>
+            </div>
+
+            <div class="console-grid">
+                <!-- PANEL IZQUIERDO -->
+                <div class="console-left-panel">
+                    <p class="panel-section-title">🚨 Alertas en Tiempo Real (Interrupciones)</p>
+                    <div class="live-alert-card">
+                        <h4>⚠️ ¡PÁNICO EN VIVO DETECTADO!</h4>
+                        <p><strong>Ubicación:</strong> Cra 16 con Calle 45 (Poste #4)</p>
+                        <p><strong>Origen:</strong> Pulsador Físico Hongo (Capa 1)</p>
+                        <p><strong>Tiempo:</strong> Hace 12 segundos</p>
+                    </div>
+
+                    <p class="panel-section-title">📷 Registro de Placas Recientes (LPR - Edge)</p>
+                    <div class="lpr-feed-box">
+                        <div class="lpr-line">14:02:10 | Placa: ABC-123 | Coinc: 04% [OK]</div>
+                        <div class="lpr-line danger">14:01:45 | Placa: XYZ-987 | Coinc: 96% [SOSPECHA]</div>
+                        <div class="lpr-line">13:58:32 | Placa: MNM-456 | Coinc: 12% [OK]</div>
+                    </div>
+                </div>
+
+                <!-- PANEL DER / MAPA Y TELEMETRÍA -->
+                <div class="console-right-panel">
+                    <div class="map-mock-bg">
+                        <div class="map-street-1"></div>
+                        <div class="map-street-2"></div>
+                        <div class="map-street-3"></div>
+
+                        <div class="map-marker marker-cai">🚓 CAI Parkway</div>
+                        <div class="map-marker marker-cam">📷 LPR Norte</div>
+                        <div class="map-marker marker-alert">⚠️ ALERTA EN VIVO (Poste #4)</div>
+                        <div class="patrol-route-line"></div>
+                        
+                        <div style="position: absolute; bottom: 10px; right: 10px; font-size: 11px; color: var(--text-muted);">
+                            🗺️ Cartografía: Teusaquillo / Sector Universitario
+                        </div>
+                    </div>
+
+                    <div class="telemetry-panel">
+                        <div>
+                            <p class="panel-section-title">🔋 Estado Red de Sensores (Último reporte 30m)</p>
+                            <table class="telemetry-table">
+                                <tr><td>Nodo #01 (Barrera Casa 1)</td><td style="color: var(--emerald);">Bat: 94%</td><td>RSSI: -68dBm</td></tr>
+                                <tr><td>Nodo #02 (Barrera Casa 2)</td><td style="color: var(--emerald);">Bat: 91%</td><td>RSSI: -72dBm</td></tr>
+                            </table>
+                        </div>
+                        <div>
+                            <p class="panel-section-title">📊 Red Core e Internet (Backhaul Gateway)</p>
+                            <table class="telemetry-table">
+                                <tr><td>Enlace Principal</td><td style="color: var(--accent-cian);">Celular 4G/5G (APN Privado)</td></tr>
+                                <tr><td>Protocolo Broker</td><td style="color: var(--amber);">MQTT Broker Operativo</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-footer" style="width: 950px;">
+            Wireframe de la aplicación móvil y de la consola de monitoreo para el CAI de Parkway propuesta. Diseño propio. Código basado en el prompt propio por la aplicación Gemini IA (2026).
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📍 Despliegue de Red - Cuadrante E13C05020</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 30px 10px; display: flex; flex-direction: column; align-items: center; margin:0; }
+        .map-container { width: 100%; max-width: 1050px; background: #1e293b; padding: 25px; border-radius: 16px; border: 2px solid #10b981; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { color: #10b981; text-align: center; margin: 0 0 10px 0; text-transform: uppercase; font-size: 22px; }
+        #map { width: 100%; height: 580px; background: #0f172a; border-radius: 8px; border: 1px solid #334155; }
+        .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 20px; background: #111827; padding: 15px; border-radius: 8px; border: 1px solid #334155; }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 2px solid #fff; }
+        
+        /* Estilo para la etiqueta personalizada del CAI Parkway */
+        .cai-label {
+            background: #1e293b;
+            color: #38bdf8;
+            border: 2px solid #38bdf8;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 12px;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="map-container">
+        <h1>📍 Despliegue Cartográfico de Nodos Tecnológicos</h1>
+        <p style="text-align: center; font-size: 13px; color: #94a3b8; margin: 0 0 20px 0;">Distribución geoespacial sobre el Cuadrante E13C05020 de la Policía Metropolitana de Bogotá.</p>
+        
+        <div id="map"></div>
+
+        <div class="legend">
+            <div class="legend-item"><span class="dot" style="background:#10b981"></span> <span><strong>🟢 Gateway Central:</strong> Concentrador Core (Capa 3)</span></div>
+            <div class="legend-item"><span class="dot" style="background:#dc2626"></span> <span><strong>🔴 Botones de Pánico:</strong> Postes de Emergencia (Capa 1)</span></div>
+            <div class="legend-item"><span class="dot" style="background:#0284c7"></span> <span><strong>🔵 Nodos Perimetrales:</strong> Sensor de Intrusión (Capa 1)</span></div>
+            <div class="legend-item"><span class="dot" style="background:#d97706"></span> <span><strong>🟠 Subestación Edge:</strong> Raspberry Pi 5 (Capa 2)</span></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Configurar un sistema de coordenadas plano basado en los píxeles de la imagen original
+        const map = L.map('map', { crs: L.CRS.Simple, minZoom: -1 });
+
+        // Dimensiones de la imagen para el encuadre matemático
+        const bounds = [[0, 0], [750, 1000]]; 
+        
+        // CORREGIDO: Carga la imagen con el nuevo nombre solicitado
+        const image = L.imageOverlay('mapacuadrante.png', bounds).addTo(map);
+        map.fitBounds(bounds);
+
+        // ==========================================
+        // 1. GATEWAY PRINCIPAL (VERDE)
+        // ==========================================
+        L.circleMarker([350, 500], { color: '#ffffff', fillColor: '#10b981', fillOpacity: 0.9, radius: 10 })
+            .addTo(map).bindPopup("<b>🟢 GATEWAY CENTRAL LORAWAN</b><br>Ubicación: Centro del Cuadrante (Agregador Core).");
+
+
+        // ==========================================
+        // 2. BOTONES DE PÁNICO (ROJOS) - TOTAL: 4
+        // ==========================================
+        // Poste 1 (Original)
+        L.circleMarker([450, 680], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 })
+            .addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO (Poste #1)</b><br>Sector: Zonas peatonales Av. Calle 24.");
+
+        // Poste 2 (Original)
+        L.circleMarker([220, 310], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 })
+            .addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO (Poste #2)</b><br>Sector: Aledaños Almacén Olímpica Centro Nariño.");
+
+        // Poste 3 (NUEVO)
+        L.circleMarker([620, 520], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 })
+            .addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO (Poste #3)</b><br>Sector: Zona Norte - Cercanías Corferias.");
+
+        // Poste 4 (NUEVO)
+        L.circleMarker([120, 480], { color: '#ffffff', fillColor: '#dc2626', fillOpacity: 0.9, radius: 8 })
+            .addTo(map).bindPopup("<b>🚨 BOTÓN DE PÁNICO (Poste #4)</b><br>Sector: Zona Sur - Eje de la Av. Calle 23.");
+
+
+        // ==========================================
+        // 3. NODOS PERIMETRALES (AZULES) - TOTAL: 5
+        // ==========================================
+        // Nodo A (Original)
+        L.circleMarker([550, 380], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 })
+            .addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL (Nodo A)</b><br>Hardware: SoC STM32WLE5.");
+
+        // Nodo B (Original)
+        L.circleMarker([180, 750], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 })
+            .addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL (Nodo B)</b><br>Ubicación: Accesos de la Carrera 33.");
+
+        // Nodo C (NUEVO)
+        L.circleMarker([420, 220], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 })
+            .addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL (Nodo C)</b><br>Ubicación: Zona Occidental - Av. Calle 24.");
+
+        // Nodo D (NUEVO)
+        L.circleMarker([650, 780], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 })
+            .addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL (Nodo D)</b><br>Ubicación: Esquina Nororiental del Cuadrante.");
+
+        // Nodo E (NUEVO)
+        L.circleMarker([310, 880], { color: '#ffffff', fillColor: '#0284c7', fillOpacity: 0.9, radius: 7 })
+            .addTo(map).bindPopup("<b>🔵 SENSOR PERIMETRAL (Nodo E)</b><br>Ubicación: Zona Residencial - Carrera 33 Este.");
+
+
+        // ==========================================
+        // 4. SUBESTACIÓN EDGE (NARANJA)
+        // ==========================================
+        L.circleMarker([380, 420], { color: '#ffffff', fillColor: '#d97706', fillOpacity: 0.9, radius: 8 })
+            .addTo(map).bindPopup("<b>🟠 PROCESAMIENTO PERIMETRAL EDGE</b><br>Hardware: Raspberry Pi 5 Core.");
+
+
+        // ==========================================
+        // 5. INDICADOR CAI PARKWAY (NUEVO)
+        // ==========================================
+        // Se posiciona en el borde derecho apuntando hacia afuera
+        const caiIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: "<div class='cai-label'>CAI Parkway ➡️</div>",
+            iconSize: [120, 30],
+            iconAnchor: [0, 15]
+        });
+        
+        L.marker([380, 960], { icon: caiIcon }).addTo(map)
+            .bindPopup("<b>🖥️ Destino del Flujo de Datos</b><br>Dirección del CAI Parkway hacia donde se despachan las interrupciones críticas.");
+            
+    </script>
+</body>
+</html>
